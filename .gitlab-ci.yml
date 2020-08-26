@@ -19,6 +19,6 @@ deploy:
   script:
     - aws s3 cp . s3://elasticbeanstalk-us-east-1-201886813087/docker-react-$CI_PIPELINE_ID/
     - aws elasticbeanstalk create-application-version --application-name docker-react --version-label docker-react-$CI_PIPELINE_ID --source-bundle S3Bucket=elasticbeanstalk-us-east-1-201886813087,S3Key=docker-react-$CI_PIPELINE_ID
-    - aws elasticbeanstalk update-environment --application-name docker-react --environment-name DockerReact-env-2 --version-label docker-react-$CI_PIPELINE_ID
+    - aws elasticbeanstalk update-environment --application-name docker-react --environment-name DockerReact-env --version-label docker-react-$CI_PIPELINE_ID
   only:
     - master
