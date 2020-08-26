@@ -17,8 +17,10 @@ deploy:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
-    - aws s3 cp . s3://elasticbeanstalk-us-east-1-201886813087/docker-react-$CI_PIPELINE_ID/
-    - aws elasticbeanstalk create-application-version --application-name docker-react --version-label docker-react-$CI_PIPELINE_ID --source-bundle S3Bucket=elasticbeanstalk-us-east-1-201886813087,S3Key=docker-react-$CI_PIPELINE_ID
+    - apt install zip
+    - zip -r docker-react-$CI_PIPELINE_ID.zip . -x /.git/*
+    - aws s3 cp /builds/ankovalenko/ankovalenko/docker-react-$CI_PIPELINE_ID.zip s3://elasticbeanstalk-us-east-1-201886813087/docker-react-$CI_PIPELINE_ID/
+    - aws elasticbeanstalk create-application-version --application-name docker-react --version-label docker-react-$CI_PIPELINE_ID --source-bundle S3Bucket=elasticbeanstalk-us-east-1-201886813087,S3Key=docker-react-$CI_PIPELINE_ID/docker-react-$CI_PIPELINE_ID.zip
     - aws elasticbeanstalk update-environment --application-name docker-react --environment-name DockerReact-env --version-label docker-react-$CI_PIPELINE_ID
   only:
     - master
